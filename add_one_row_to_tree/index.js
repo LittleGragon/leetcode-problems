@@ -1,3 +1,11 @@
+
+
+function TreeNode(val, left, right) {
+  this.val = (val === undefined ? 0 : val)
+  this.left = (left === undefined ? null : left)
+  this.right = (right === undefined ? null : right)
+}
+
 /**
  * @param {TreeNode} root
  * @param {number} val
@@ -46,32 +54,58 @@ var addOneRow = function (root, val, depth) {
             }
           })()
           for (let g = j; g <= Math.pow(2, parentNodesCount); g++) {
-            const v = Math.floor((g +1 ) / 2) ;
-            if (!slots[i][g+1]) {
+            const v = Math.floor((g + 1) / 2);
+            if (!slots[i][g + 1]) {
               if (slots[i - 1][v]) {
-                slots[i][g] = null 
+                slots[i][g] = null
                 slots[i][g + 1] = newGroups[i][j]
               }
-            } 
+            }
           }
         }
       })()
     }
   }
-  
-  for (let i = slots.length - 1; i > 0 ; i--) {
-    for(let j = slots[i].length - 1; j > 0; j --) {
-      if(slots[i][j] ||  i !== slots.length - 1 ) {
+
+  for (let i = slots.length - 1; i > 0; i--) {
+    for (let j = slots[i].length - 1; j > 0; j--) {
+      if (slots[i][j] || i !== slots.length - 1) {
         break
-      } else {       
+      } else {
         slots[i] = slots[i].filter((item, index) => index !== j)
       }
     }
   }
-  const result = slots.flat()
-  return result;
+  const left = [];
+  const right = [];
+  let vval = null;
+  // const result = slots.flat().forEach((item, index) => {
+  //   if (index === 0) {
+  //     val = item;
+  //   }
+  // })
+  for(let i =0 ; i < slots.length; i ++) {
+    for(let j = 0 ; j < slots[i].length; j++) {
+      if (i == 0 && j === 0) {
+        vval = slots[i][j];
+      } else {
+        // const v = Math.ceil((j + 1) / 2);
+        // console.log(v, j );
+        if(j+ 1 <= (Math.pow(2, i ) / 2)) {
+          left.push(slots[i][j])
+        } else {
+          if (!(right.length === 0 && !slots[i][j])) {
+            right.push(slots[i][j])
+          }
+        }
+      }
+    }
+  }
+  // return TreeNode(vval, left, right)
+  console.log(left, right, vval);
+  return slots.flat()
 };
 
-module.exports =  {
+module.exports = {
   addOneRow
 }
